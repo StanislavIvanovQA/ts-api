@@ -16,9 +16,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Build Docker image
-        run: docker build -t pw-tests-image .
-
       - name: Run Playwright tests inside Docker container
         run: npm run docker-compose
 
