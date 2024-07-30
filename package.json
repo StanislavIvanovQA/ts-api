@@ -7,7 +7,7 @@
     "allure:generate": "npx allure generate ./allure-results --clean",
     "allure:serve": "npx allure serve",
     "test": "npx playwright test",
-    "docker-compose": "docker-compose up api-tests --abort-on-container-exit --remove-orphans"
+    "docker-compose": "docker-compose up api-tests"
   },
   "keywords": [],
   "author": "",
