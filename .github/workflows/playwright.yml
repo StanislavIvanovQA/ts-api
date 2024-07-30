@@ -20,7 +20,7 @@ jobs:
         run: docker build -t pw-tests-image .
 
       - name: Run Playwright tests inside Docker container
-        run: npm docker-compose
+        run: npm run docker-compose
 
       - uses: actions/upload-artifact@master
         with:
