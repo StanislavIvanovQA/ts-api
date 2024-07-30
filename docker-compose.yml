@@ -1,0 +1,13 @@
+services:
+  api-tests:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    working_dir: /tests
+    image: playwright-api-tests
+    volumes:
+      - .:/tests
+      - node_modules:/tests/node_modules
+    command: npm test
+volumes:
+  node_modules:

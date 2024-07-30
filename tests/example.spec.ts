@@ -1,6 +1,8 @@
 import {test, expect} from '@playwright/test';
+import {UserParams} from '../api/user/UserParams';
+import {createRandomUserParams} from '../utils/random';
 
-test.describe.skip('example suite', () => {
+test.describe('example suite', () => {
     const EXPECTED_METHODS = ['get', 'post', 'delete', 'put', 'patch'] as const;
 
     test('Hello test', async ({request}) => {
@@ -26,25 +28,27 @@ test.describe.skip('example suite', () => {
     });
 });
 
-test.describe.skip('auth tests', () => {
+type UserRequest = {
+    data: UserParams
+}
+
+test.describe('auth tests', () => {
     let userId: number;
     let authCookie: string;
     let csrfToken: string;
+    let userData: UserParams;
 
     test.beforeAll(async ({request}) => {
-        const body = {
-            data: {
-                username: 'test_user',
-                firstName: 'Jane',
-                lastName: 'Doe',
-                email: 'jane.doe@email.com',
-                password: 'qwerty123'
-            }
+        const userParams: UserParams = createRandomUserParams();
+
+        const body: UserRequest = {
+            data: userParams
         };
         const response = await request.post('user', body);
 
         await expect(response).toBeOK();
         userId = (await response.json()).id;
+        userData = userParams;
     });
 
     test.afterAll(async ({request}) => {
@@ -62,8 +66,8 @@ test.describe.skip('auth tests', () => {
     test.beforeEach(async ({context}) => {
         const loginBody = {
             data: {
-                email: 'jane.doe@email.com',
-                password: 'qwerty123'
+                email: userData.email,
+                password: userData.password
             }
         };
 
@@ -80,7 +84,7 @@ test.describe.skip('auth tests', () => {
 
     test('auth user check id', async ({context}) => {
         const response = await context.request.get('user/auth');
-        const responseBody = await response.json() as {user_id: number};
+        const responseBody = await response.json() as { user_id: number };
 
         expect(responseBody.user_id).toEqual(+userId);
     });
@@ -91,10 +95,10 @@ test.describe.skip('auth tests', () => {
 
         expect(loggedInResponseBody).toEqual(expect.objectContaining({
             id: userId.toString(),
-            username: 'test_user',
-            email: 'jane.doe@email.com',
-            firstName: 'Jane',
-            lastName: 'Doe'
+            username: userData.username,
+            email: userData.email,
+            firstName: userData.firstName,
+            lastName: userData.lastName
         }));
     });
 });
