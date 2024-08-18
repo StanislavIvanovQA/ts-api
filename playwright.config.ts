@@ -1,11 +1,13 @@
 import {defineConfig, devices} from '@playwright/test';
+import * as dotenv from 'dotenv'
+import path from 'node:path';
 
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
  */
 // import dotenv from 'dotenv';
-// dotenv.config({ path: path.resolve(__dirname, '.env') });
+dotenv.config({ path: path.resolve(__dirname, '.env') });
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -37,7 +39,7 @@ export default defineConfig({
         {
             name: 'api tests',
             use: {
-                baseURL: 'https://playground.learnqa.ru/api/'
+                baseURL: process.env.BASE_URL
             }
         }
     ]
