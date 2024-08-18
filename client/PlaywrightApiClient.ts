@@ -24,11 +24,12 @@ export class PlaywrightApiClient implements ApiClient {
                 ${JSON.stringify(options.body, null, 2)}`
                 : 'without body.'}
         `, async () => {
-            const response = await (await this.apiContext())[method.toLowerCase() as unknown as 'get'](url, {
+            const context = await this.apiContext();
+            const response = await context[method](url, {
                 data: options?.body,
                 params: options?.params,
                 headers: this.extraHeaders
-            }) as APIResponse;
+            });
             let responseBody: Record<string, unknown> | string;
 
             try {

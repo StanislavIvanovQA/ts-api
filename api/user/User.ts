@@ -12,7 +12,7 @@ export class User extends ApiRoute {
         password: ${password}`, async () => {
             const body = {email, password};
 
-            return this.apiClient.sendRequest('POST', `${this.url}/login`, {body});
+            return this.apiClient.sendRequest('post', `${this.url}/login`, {body});
         });
     }
 
@@ -24,27 +24,27 @@ export class User extends ApiRoute {
             email: ${userParams.email}
             password: ${userParams.email}
         `, async () => {
-            return this.apiClient.sendRequest<CreateUserResponse>('POST', this.url, {body: userParams});
+            return this.apiClient.sendRequest<CreateUserResponse>('post', this.url, {body: userParams});
         });
     }
 
     async delete(id: string | number) {
         const userId = typeof id === 'number' ? id.toString() : id;
         return test.step(`Deleting user with id ${id}`, async () => {
-            return this.apiClient.sendRequest<{success: string}>('DELETE', this.url, {params: {id: userId}})
+            return this.apiClient.sendRequest<{success: string}>('delete', this.url, {params: {id: userId}})
         });
     }
 
     async getAuth() {
         return test.step(`Fetching user id`, async () => {
-            return this.apiClient.sendRequest<GetUserAuthResponse>('GET', `${this.url}/auth`);
+            return this.apiClient.sendRequest<GetUserAuthResponse>('get', `${this.url}/auth`);
         });
     }
 
     async getUserInfo(id: number | string) {
         const userId = typeof id === 'string' ? Number(id) : id;
         return test.step(`Fetching user info by id: ${id}`, async () => {
-            const response = await this.apiClient.sendRequest<UserInfo>('GET', `${this.url}/${userId}`);
+            const response = await this.apiClient.sendRequest<UserInfo>('get', `${this.url}/${userId}`);
             response.setSchema(UserInfoSchema);
             return response;
         })
