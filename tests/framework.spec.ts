@@ -4,7 +4,7 @@ import {UserParams} from '../api/user/UserParams';
 import {faker} from '@faker-js/faker';
 
 test.describe('Simple Api Tests', () => {
-    const EXPECTED_METHODS = ['GET', 'POST', 'DELETE', 'PUT', 'PATCH'] as const;
+    const EXPECTED_METHODS = ['get', 'post', 'delete', 'put', 'patch'] as const;
 
     test('Hello Test', async () => {
         const response = await new Api().hello.post({name: 'Stas'});
@@ -25,7 +25,7 @@ test.describe('Simple Api Tests', () => {
             const response = await new Api().check_type.check({method: methodName});
 
             await response.statusCode.shouldBe('OK');
-            await response.shouldContain(`Request type: ${methodName}`);
+            await response.shouldContain(`Request type: ${methodName.toUpperCase()}`);
         });
     });
 });

@@ -1,7 +1,7 @@
 import {test} from '../fixtures/custom-fixtures';
 
 test.describe('Simple Api Tests', () => {
-    const EXPECTED_METHODS = ['GET', 'POST', 'DELETE', 'PUT', 'PATCH'] as const;
+    const EXPECTED_METHODS = ['get', 'post', 'delete', 'put', 'patch'] as const;
 
     test('Hello Test', async ({api}) => {
         const response = await api.hello.post({name: 'Stas'});
@@ -22,7 +22,7 @@ test.describe('Simple Api Tests', () => {
             const response = await api.check_type.check({method: methodName});
 
             await response.statusCode.shouldBe('OK');
-            await response.shouldContain(`Request type: ${methodName}`);
+            await response.shouldContain(`Request type: ${methodName.toUpperCase()}`);
         });
     });
 });
